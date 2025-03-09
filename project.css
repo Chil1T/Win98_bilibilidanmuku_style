@@ -1,0 +1,559 @@
+/* Win98 Command Line Style for BILIBILI Chat */
+/* Designer: Claude */
+
+/* 导入像素风格字体 */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+/* 导入中文像素字体 Zpix */
+@font-face {
+  font-family: 'Zpix';
+  src: url('https://cdn.jsdelivr.net/gh/SolidZORO/zpix-pixel-font@latest/dist/zpix.ttf') format('truetype');
+  font-display: swap;
+}
+
+/* 全局背景透明，适配OBS */
+body { 
+  background-color: rgba(0, 0, 0, 0); 
+}
+
+/* 全局变量设置 */
+.event {
+  /* 字体设置 - 使用更像素化的字体组合，添加Zpix支持中文 */
+  --event-font-family: 'VT323', 'Zpix', 'DotGothic16', monospace;
+  --cmd-green: #00ff00;
+  --cmd-dim-green: #007700;
+  --cmd-yellow: #ffff00;
+  --cmd-white: #ffffff;
+  --cmd-blue: #0000aa;
+  --cmd-bg: #000000;
+  
+  /* 基础字号 */
+  font-size: var(--event-font-size);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0;
+  
+  /* 像素渲染优化 */
+  image-rendering: pixelated;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: none;
+  text-rendering: optimizeSpeed;
+  
+  /* 入场动画 */
+  animation: cmdFadeIn 0.3s ease-out forwards;
+}
+
+/* 中文字符特别处理 */
+.message {
+  font-family: var(--event-font-family);
+}
+
+/* 确保表情符号和特殊字符也能正确显示 */
+.emote, .icon {
+  font-family: sans-serif;
+}
+
+/* 弹幕列表样式 */
+.event-list {
+  padding: calc(var(--1px) * 10);
+  background-color: transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 基础消息样式 */
+.event-type--message {
+  margin-bottom: calc(var(--1px) * 6);
+  color: var(--cmd-green);
+  text-shadow: 0 0 calc(var(--1px) * 2) var(--cmd-dim-green);
+  opacity: 0.9;
+  position: relative;
+  padding-left: calc(var(--1px) * 8);
+}
+
+/* 元数据区域 */
+.event-type--message .meta {
+  display: flex;
+  align-items: center;
+  margin-bottom: calc(var(--1px) * 2);
+}
+
+/* 时间戳样式 */
+.timestamp {
+  color: var(--cmd-dim-green);
+  font-size: 0.8em;
+  opacity: 0.7;
+  font-family: 'VT323', monospace;
+  margin-right: calc(var(--1px) * 8);
+}
+
+/* 用户名样式 */
+.event-type--message .username {
+  color: var(--cmd-yellow);
+  margin-right: calc(var(--1px) * 4);
+  position: relative;
+  padding-right: calc(var(--1px) * 4);
+}
+
+/* 用户名后的冒号 */
+.event-type--message .username::after {
+  content: ":";
+  position: absolute;
+  right: 0;
+  color: var(--cmd-white);
+}
+
+/* 消息内容样式 */
+.event-type--message .message {
+  position: relative;
+  padding-left: calc(var(--1px) * 16);
+  font-size: 1.1em;
+  color: var(--cmd-green);
+  animation: typeWriter 1s steps(1, end) forwards;
+}
+
+/* 命令行前缀 */
+.event-type--message .message::before {
+  content: ">";
+  position: absolute;
+  left: 0;
+  color: var(--cmd-white);
+}
+
+/* 主播消息样式 */
+.event-type--message.user-type--streamer {
+  color: var(--cmd-white);
+  text-shadow: 0 0 calc(var(--1px) * 3) var(--cmd-white);
+}
+
+.event-type--message.user-type--streamer .username {
+  color: var(--cmd-white);
+  font-weight: bold;
+}
+
+.event-type--message.user-type--streamer .message {
+  color: var(--cmd-white);
+}
+
+.event-type--message.user-type--streamer .message::before {
+  content: "#";
+  color: var(--cmd-yellow);
+}
+
+/* 管理员消息样式 */
+.event-type--message.user-type--mod .username {
+  color: #00aaff;
+}
+
+.event-type--message.user-type--mod .message::before {
+  content: "@";
+  color: #00aaff;
+}
+
+/* 舰长消息样式 */
+.event-type--message.guard-level--1 .username,
+.event-type--message.guard-level--2 .username,
+.event-type--message.guard-level--3 .username {
+  color: #ff55ff;
+}
+
+.event-type--message.guard-level--1 .message::before,
+.event-type--message.guard-level--2 .message::before,
+.event-type--message.guard-level--3 .message::before {
+  content: "$";
+  color: #ff55ff;
+}
+
+/* 礼物消息样式 */
+.event-type--gift.event-show-as--normal {
+  color: #ffa500; /* 橙色 */
+  opacity: 0.9;
+  text-shadow: 0 0 calc(var(--1px) * 3) rgba(255, 165, 0, 0.5);
+  margin-bottom: calc(var(--1px) * 8);
+  border-left: calc(var(--1px) * 2) solid #ffa500;
+  padding-left: calc(var(--1px) * 4);
+  text-shadow: 
+    1px 0 0 rgba(255, 165, 0, 0.3),
+    -1px 0 0 rgba(255, 165, 0, 0.3),
+    0 0 3px rgba(255, 165, 0, 0.5);
+}
+
+.event-type--gift .username {
+  color: #ffa500;
+}
+
+.event-type--gift .message {
+  color: #ffa500;
+}
+
+.event-type--gift .message::before {
+  content: "$";
+  color: #ffa500;
+}
+
+/* SC样式 */
+.event-type--superchat.event-show-as--normal {
+  color: #ff55aa; /* 粉红色 */
+  text-shadow: 0 0 calc(var(--1px) * 3) rgba(255, 85, 170, 0.5);
+  margin-bottom: calc(var(--1px) * 12);
+  border-left: calc(var(--1px) * 2) solid #ff55aa;
+  padding-left: calc(var(--1px) * 4);
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  text-shadow: 
+    1px 0 0 rgba(255, 85, 170, 0.3),
+    -1px 0 0 rgba(255, 85, 170, 0.3),
+    0 0 3px rgba(255, 85, 170, 0.5);
+}
+
+.event-type--superchat .username {
+  color: #ff55aa;
+}
+
+.event-type--superchat .price {
+  color: #ff55aa;
+  font-weight: bold;
+}
+
+.event-type--superchat .top {
+  border-bottom: calc(var(--1px) * 1) dotted #ff55aa;
+  padding-bottom: calc(var(--1px) * 4);
+  margin-bottom: calc(var(--1px) * 4);
+}
+
+.event-type--superchat .message {
+  color: #ff55aa;
+}
+
+.event-type--superchat .message::before {
+  content: "!";
+  color: #ff55aa;
+}
+
+/* 系统消息样式 */
+.event-type--system {
+  color: var(--cmd-dim-green);
+  font-style: italic;
+}
+
+.event-type--system .message::before {
+  content: "~";
+}
+
+/* 表情样式 */
+.emote {
+  display: inline-block;
+  vertical-align: middle;
+  max-height: calc(var(--1px) * 24);
+  margin: 0 calc(var(--1px) * 2);
+  image-rendering: pixelated;
+}
+
+/* 优化打字机效果 */
+@keyframes typeWriter {
+  0% { clip-path: inset(0 100% 0 0); }
+  20% { clip-path: inset(0 80% 0 0); }
+  35% { clip-path: inset(0 65% 0 0); }
+  45% { clip-path: inset(0 55% 0 0); }
+  65% { clip-path: inset(0 35% 0 0); }
+  75% { clip-path: inset(0 25% 0 0); }
+  85% { clip-path: inset(0 15% 0 0); }
+  92% { clip-path: inset(0 8% 0 0); }
+  100% { clip-path: inset(0 0 0 0); }
+}
+
+/* 为不同类型的消息设置不同的打字速度 */
+.event-type--message.user-type--streamer .message {
+  animation-duration: 0.8s; /* 主播消息打字稍快 */
+}
+
+.event-type--superchat .message {
+  animation-duration: 1.2s; /* SC消息打字稍慢 */
+}
+
+.event-type--gift .message {
+  animation-duration: 0.6s; /* 礼物消息打字较快 */
+}
+
+/* 系统消息打字机效果 */
+.event-type--system .message {
+  animation: typeWriter 1.5s steps(1, end) forwards; /* 系统消息打字最慢 */
+}
+
+/* 移除旧的动画设置 */
+.event-type--message {
+  margin-bottom: calc(var(--1px) * 6);
+  color: var(--cmd-green);
+  text-shadow: 0 0 calc(var(--1px) * 2) var(--cmd-dim-green);
+  opacity: 0.9;
+  position: relative;
+  padding-left: calc(var(--1px) * 8);
+}
+
+/* 只为最后一条消息添加闪烁光标 */
+.event-type--message:last-child .message::after {
+  content: "_";
+  display: inline-block;
+  position: relative;
+  margin-left: calc(var(--1px) * 4);
+  color: inherit;
+  animation: blink 1s step-end infinite;
+}
+
+/* 优化光标闪烁动画 */
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* 入场动画 */
+@keyframes cmdFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--1px) * 10));
+  }
+  to {
+    opacity: 0.9;
+    transform: translateY(0);
+  }
+}
+
+/* 深色模式适配 */
+.scheme-dark .event {
+  /* 深色模式下保持相同样式 */
+  opacity: 0.9;
+}
+
+/* 隐藏不需要的元素 */
+.avatar-wrap,
+.fans-medal,
+.guard-badge,
+.wealth-medal,
+.user-level {
+  display: none !important;
+}
+
+/* 礼物图片小型化 */
+.gift-image {
+  max-width: calc(var(--1px) * 16);
+  max-height: calc(var(--1px) * 16);
+  opacity: 0.8;
+  image-rendering: pixelated;
+}
+
+/* Windows 98风格滚动条 */
+::-webkit-scrollbar {
+  width: 16px;
+  background: #008080;
+  opacity: 0.8;
+  transition: opacity 0.3s;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 3px solid;
+  border-color: #FFF #404040 #404040 #FFF;
+  background: #C0C0C0;
+}
+
+::-webkit-scrollbar:hover {
+  opacity: 1;
+}
+
+/* 消息输入框的DOS风格 */
+input[type="text"] {
+  border: 3px inset #c0c0c0;
+  background: #000;
+  color: #00FF00;
+  padding: 2px 4px;
+  caret-color: #00FF00;
+  font-family: 'VT323', monospace;
+}
+
+/* 舰长入场消息 */
+.event-type--toast.event-show-as--normal {
+  background-color: rgba(0, 0, 0, 0.7);
+  border: calc(var(--1px) * 2) double var(--cmd-yellow);
+  padding: calc(var(--1px) * 8);
+  margin: calc(var(--1px) * 12) 0;
+  color: var(--cmd-yellow);
+  text-align: center;
+}
+
+.event-type--toast.event-show-as--normal .message::before {
+  content: "*** ";
+}
+
+.event-type--toast.event-show-as--normal .message::after {
+  content: " ***";
+}
+
+/* 红包和抽奖消息 */
+.event-type--red-envelope-start,
+.event-type--lottery-start {
+  border: calc(var(--1px) * 1) dashed var(--cmd-yellow);
+  padding: calc(var(--1px) * 8);
+  margin: calc(var(--1px) * 12) 0;
+  color: var(--cmd-yellow);
+  text-align: center;
+}
+
+/* 互动消息 */
+.event-type--interaction {
+  color: var(--cmd-dim-green);
+  font-style: italic;
+  margin: calc(var(--1px) * 4) 0;
+}
+
+.event-type--interaction .message::before {
+  content: "< ";
+}
+
+.event-type--interaction .message::after {
+  content: " >";
+}
+
+/* CRT显示器效果 */
+/* 移除原来的全局扫描线 */
+.event-list::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    circle at center,
+    transparent 0%,
+    rgba(0, 32, 0, 0.3) 90%
+  );
+  pointer-events: none;
+  z-index: 998;
+}
+
+/* 移除原来的after效果 */
+.event-list::after {
+  display: none;
+}
+
+/* 为每条消息添加扫描线 */
+.event-type--message {
+  position: relative;
+  overflow: hidden;
+}
+
+.event-type--message::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    transparent 50%, 
+    rgba(0, 0, 0, 0.15) 50%
+  );
+  background-size: 100% 2px;
+  pointer-events: none;
+  animation: scanline 8s linear infinite;
+  opacity: 0.8;
+  z-index: 2;
+}
+
+/* 调整消息容器，确保扫描线正确覆盖 */
+.event-type--message .message {
+  position: relative;
+  z-index: 1;
+}
+
+/* 同样为礼物消息添加扫描线 */
+.event-type--gift.event-show-as--normal {
+  position: relative;
+  overflow: hidden;
+}
+
+.event-type--gift.event-show-as--normal::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    transparent 50%, 
+    rgba(0, 0, 0, 0.15) 50%
+  );
+  background-size: 100% 2px;
+  pointer-events: none;
+  animation: scanline 8s linear infinite;
+  opacity: 0.8;
+  z-index: 2;
+}
+
+/* 为SC消息添加扫描线 */
+.event-type--superchat.event-show-as--normal {
+  position: relative;
+  overflow: hidden;
+}
+
+.event-type--superchat.event-show-as--normal::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    transparent 50%, 
+    rgba(0, 0, 0, 0.15) 50%
+  );
+  background-size: 100% 2px;
+  pointer-events: none;
+  animation: scanline 8s linear infinite;
+  opacity: 0.8;
+  z-index: 2;
+}
+
+/* 调整扫描线动画 */
+@keyframes scanline {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(2px); }
+}
+
+/* 增强发光效果 */
+.event-type--message .message {
+  position: relative;
+}
+
+.event-type--message .message::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--cmd-green);
+  filter: blur(2px);
+  opacity: 0.2;
+  z-index: -1;
+}
+
+/* 优化超级留言的CRT效果 */
+.event-type--superchat.event-show-as--normal {
+  text-shadow: 
+    1px 0 0 rgba(255, 85, 170, 0.3),
+    -1px 0 0 rgba(255, 85, 170, 0.3),
+    0 0 3px rgba(255, 85, 170, 0.5);
+}
+
+/* 优化礼物消息的CRT效果 */
+.event-type--gift.event-show-as--normal {
+  text-shadow: 
+    1px 0 0 rgba(255, 165, 0, 0.3),
+    -1px 0 0 rgba(255, 165, 0, 0.3),
+    0 0 3px rgba(255, 165, 0, 0.5);
+}
+  
