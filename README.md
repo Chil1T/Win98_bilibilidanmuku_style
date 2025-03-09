@@ -7,6 +7,7 @@
 1. 访问 [LAPLACE Chat](https://chat.vrp.moe/)
 2. 在样式设置中:
    - 将 `project.css` 中的内容复制到 高级CSS编辑器 进行预览
+   > 也可以在本页面直接查看[预览图片](#attachment)
 3. 点击"进阶>设置向导"
 4. 选择连接方式（可以选择匿名直连或开放平台）
 5. 在OBS中:
@@ -60,3 +61,6 @@ MIT License
 ## 作者
 
 设计：Claude&&Chil1T
+
+## Attachment
+![Image text](pre.png)
